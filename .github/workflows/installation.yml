@@ -33,15 +33,9 @@ jobs:
         sed -i 's|<YOUR DISCORD WEBHOOK>|https://discord.com/api/webhooks/1210314369876099104/-NJI8YhCNENGQUeBPbRjpLvtmo3Kn9UYrI_5rI-HFboeH5S9kfA2dVCexaB4JAUBqiHA|' config.yml
         sudo service docker start
         docker-compose up -d
-
     - name: Wait for MongoDB to start
       run: docker-compose exec mongodb sh -c 'while ! nc -z localhost 27017; do sleep 1; done'
 
-    - name: Install Python Dependencies
-      run: |
-        cd programs-watcher
-        pip3 install -r requirements.txt
-
-    - name: Run Program Watcher
-      run: python3 main.py
+    - name: Show MongoDB container logs
+      run: docker logs mongodb
          
