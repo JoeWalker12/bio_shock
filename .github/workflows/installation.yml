@@ -19,5 +19,5 @@ jobs:
       - name: Setup Docker Compose
         run: |
           cd programs-watcher
-          docker-compose up -d && python3 main.py
+          docker-compose up -d && python2 main.py
          
