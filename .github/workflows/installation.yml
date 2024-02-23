@@ -19,5 +19,7 @@ jobs:
       - name: Setup Docker Compose
         run: |
           cd programs-watcher
-          docker-compose up -d && python main.py >> all_logs.log 2>&1 || echo "Script failed with exit code $?"
+          touch test.log
+          docker-compose up -d && python main.py >> all_logs.log 2>&1 || tee test.log
+          cat test.log
          
