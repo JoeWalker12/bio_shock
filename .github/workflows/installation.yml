@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    
     - name: Clone the repository
       run: git clone https://github.com/Alikhalkhali/programs-watcher.git
 
@@ -28,5 +27,3 @@ jobs:
     - name: Run Program Watcher
       run: python3 main.py
       working-directory: programs-watcher
-
-         
