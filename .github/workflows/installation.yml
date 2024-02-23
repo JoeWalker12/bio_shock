@@ -22,8 +22,14 @@ jobs:
       - name: Clone repository
         run: git clone https://github.com/Alikhalkhali/programs-watcher.git
 
-      - name: Setup Docker Compose
+      - name: Execute Python script
         run: |
           cd programs-watcher
-          docker-compose up -d && python2 main.py
+          pip3 install -r requirements.txt
+          python3 main.py
+
+#      - name: Setup Docker Compose
+#        run: |
+#          cd programs-watcher
+#          docker-compose up -d && python2 main.py
          
