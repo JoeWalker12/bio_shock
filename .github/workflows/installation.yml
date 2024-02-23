@@ -1,0 +1,22 @@
+name: Initial Setup
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Clone repository
+        run: git clone https://github.com/Alikhalkhali/programs-watcher.git
+
+      - name: Setup Docker Compose
+        run: |
+          cd programs-watcher
+          docker-compose up -d
