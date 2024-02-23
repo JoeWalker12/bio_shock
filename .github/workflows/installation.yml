@@ -1,4 +1,4 @@
-name: Initial Setup
+name: Program Watcher
 
 on:
   push:
@@ -6,27 +6,42 @@ on:
       - main
 
 jobs:
-  setup:
+  setup-environment:
     runs-on: ubuntu-latest
 
     steps:
-      
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      - name: Clone repository
-        run: git clone https://github.com/Alikhalkhali/programs-watcher.git
+  run-program-watcher:
+    runs-on: ubuntu-latest
+    needs: setup-environment
 
-      - name: Execute Python script
-        run: |
-          cd programs-watcher
-          sed -i 's|mongodb://db:27017/|mongodb://localhost:27017/|' config.yml
-          sed -i 's|<YOUR DISCORD WEBHOOK>|https://discord.com/api/webhooks/1210314369876099104/-NJI8YhCNENGQUeBPbRjpLvtmo3Kn9UYrI_5rI-HFboeH5S9kfA2dVCexaB4JAUBqiHA|' config.yml
-          pip3 install -r requirements.txt
-          python3 main.py
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - "27017:27017"
+        options: --health-cmd "mongo --eval 'db.runCommand({ ping:1})'" --health-interval 10s --health-timeout 5s --health-retries 3
 
-#      - name: Setup Docker Compose
-#        run: |
-#          cd programs-watcher
-#          docker-compose up -d && python2 main.py
+    steps:
+    - name: Set up Docker Compose
+      run: |
+        git clone https://github.com/Alikhalkhali/programs-watcher.git
+        cd programs-watcher
+        sed -i 's|mongodb://db:27017/|mongodb://localhost:27017/|' config.yml
+        sed -i 's|<YOUR DISCORD WEBHOOK>|https://discord.com/api/webhooks/1210314369876099104/-NJI8YhCNENGQUeBPbRjpLvtmo3Kn9UYrI_5rI-HFboeH5S9kfA2dVCexaB4JAUBqiHA|' config.yml
+        sudo service docker start
+        docker-compose up -d
+
+    - name: Wait for MongoDB to start
+      run: docker-compose exec mongodb sh -c 'while ! nc -z localhost 27017; do sleep 1; done'
+
+    - name: Install Python Dependencies
+      run: |
+        cd programs-watcher
+        pip3 install -r requirements.txt
+
+    - name: Run Program Watcher
+      run: python3 main.py
          
