@@ -19,7 +19,5 @@ jobs:
       - name: Setup Docker Compose
         run: |
           cd programs-watcher
-          touch test.log
-          docker-compose up -d && python main.py >> all_logs.log 2>&1 || tee test.log
-          cat test.log
+          docker-compose up -d && python main.py
          
