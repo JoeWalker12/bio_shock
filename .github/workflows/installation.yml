@@ -1,31 +1,36 @@
-name: Program Watcher Setup
+name: Program Watcher
 
-on:
-  workflow_run:
-    workflows: ["Trigger Program Watcher Setup"]
-    types:
-      - completed
+on: [push] # or any other event that triggers the workflow
 
 jobs:
-  setup:
+  setup-and-run:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Clone the repository
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8' # Specify the Python version
+
+    - name: Clone programs-watcher
       run: git clone https://github.com/Alikhalkhali/programs-watcher.git
 
-    - name: Update config.yml
+    - name: Navigate to the cloned directory
+      run: cd programs-watcher
+
+    - name: Configure programs-watcher
+      run: |
+        sed -i 's|<YOUR DISCORD WEBHOOK>|https://discord.com/api/webhooks/1210314369876099104/-NJI8YhCNENGQUeBPbRjpLvtmo3Kn9UYrI_5rI-HFboeH5S9kfA2dVCexaB4JAUBqiHA|' config.yml
+        sed -i 's|mongodb://db:27017/|${{ secrets.MONGODB_ATLAS_SECRET }}|' config.yml
+
+    - name: Install dependencies
       run: |
         cd programs-watcher
-        sed -i 's|<YOUR DISCORD WEBHOOK>|https://discord.com/api/webhooks/1210314369876099104/-NJI8YhCNENGQUeBPbRjpLvtmo3Kn9UYrI_5rI-HFboeH5S9kfA2dVCexaB4JAUBqiHA|' config.yml
-        sed -i "s|mongodb://db:27017/|${{ secrets.MONGODB_ATLAS_SECRET }}|" config.yml
+        pip install -r requirements.txt
 
-    - name: Install requirements
-      run: pip3 install -r requirements.txt
-      working-directory: programs-watcher
-
-    - name: Run Program Watcher
-      run: python3 main.py      
-      working-directory: programs-watcher
+    - name: Run programs-watcher
+      run: python3 main.py
       env:
-        MONGODB_URL: ${{ secrets.MONGODB_ATLAS_SECRET }}
+        MONGODB_URL: ${{ secrets.MONGODB_URL }} # Assuming you've set your MongoDB URL as a secret
