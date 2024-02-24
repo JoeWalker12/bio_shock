@@ -18,12 +18,14 @@ jobs:
       run: |
         cd programs-watcher
         sed -i 's|<YOUR DISCORD WEBHOOK>|https://discord.com/api/webhooks/1210314369876099104/-NJI8YhCNENGQUeBPbRjpLvtmo3Kn9UYrI_5rI-HFboeH5S9kfA2dVCexaB4JAUBqiHA|' config.yml
-        sed -i "s|<YOUR MONGODB CONNECTION URL>|${{ secrets.MONGODB_CONNECTION_URL }}|" config.yml
+        sed -i "s|mongodb://db:27017/|${{ secrets.MONGODB_ATLAS_SECRET }}|" config.yml
 
     - name: Install requirements
       run: pip3 install -r requirements.txt
       working-directory: programs-watcher
 
     - name: Run Program Watcher
-      run: python3 main.py
+      run: python3 main.py      
       working-directory: programs-watcher
+      env:
+        MONGODB_URL: ${{ secrets.MONGODB_ATLAS_SECRET }}
