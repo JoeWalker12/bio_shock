@@ -33,7 +33,7 @@ jobs:
 
     - name: Run programs-watcher
       run: |
-        cd programs-watcher
         python3 main.py
+#       cd programs-watcher
       env:
         MONGODB_URL: ${{ secrets.MONGODB_URL }} # Assuming you've set your MongoDB URL as a secret
