@@ -15,7 +15,7 @@ jobs:
         python-version: '3.8' # Specify the Python version
 
     - name: Clone programs-watcher
-      run: git clone https://github.com/mehranKkhn/biological_process.git
+      run: git clone https://github.com/mehranKkhn/programs-watcher.git
 
     - name: Navigate to the cloned directory
       run: cd programs-watcher
