@@ -1,6 +1,13 @@
 name: Program Watcher
 
-on: [push] # or any other event that triggers the workflow
+on:
+  push: # or any other event that triggers the workflow
+  schedule:
+    - cron: '*/30 * * * *'
+
+#on: [push] # or any other event that triggers the workflow
+#  schedule:
+#    - cron: '*/30 * * * *'
 
 jobs:
   setup-and-run:
