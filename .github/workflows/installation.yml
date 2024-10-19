@@ -7,7 +7,7 @@ on:
 
 #on: [push] # or any other event that triggers the workflow
 #  schedule:
-#    - cron: '*/30 * * * *'
+#    - cron: '*/30 * * * *' 
 
 jobs:
   setup-and-run:
