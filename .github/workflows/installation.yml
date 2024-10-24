@@ -22,7 +22,7 @@ jobs:
         python-version: '3.9' # Specify the Python version
 
     - name: Clone programs-watcher
-      run: git clone https://github.com/mehranKkhn/programs-watcher.git
+      run: git clone https://github.com/JoeWalker12/programs-watcher.git
 
     - name: Navigate to the cloned directory
       run: cd programs-watcher
